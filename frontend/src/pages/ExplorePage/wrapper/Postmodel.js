@@ -66,7 +66,6 @@ const Wrapper = styled.div`
 
           & > .comment-section {
             width: 100%;
-          
 
             & > .user-content {
               display: flex;
@@ -106,7 +105,6 @@ const Wrapper = styled.div`
               overflow-y: scroll;
               scrollbar-width: none;
               -ms-overflow-style: none;
-         
 
               &::-webkit-scrollbar {
                 width: 0;
@@ -120,36 +118,29 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 800px) {
-
-    & > .slider{
-
-      & > .slider-content{
-        & > .slider-items{
-
-          & > .slide-model{
-
+    & > .slider {
+      & > .slider-content {
+        & > .slider-items {
+          & > .slide-model {
             display: flex;
             flex-direction: column;
 
-            & > .post-img{
+            & > .post-img {
               width: 100%;
               height: 300px;
             }
 
-            & > .comment-section{
-              
-              & .comments-lst{
+            & > .comment-section {
+              & .comments-lst {
                 height: 400px;
                 overflow: hidden;
-                  overflow-y: scroll;
+                overflow-y: scroll;
               }
             }
           }
         }
       }
-
     }
-    
   }
 `;
 

@@ -59,7 +59,7 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
       <img
         className="coverimg"
         src={coverpage.preview ?? coverpage.coverimg ?? profileUser.coverpage}
-        alt=""
+        alt="Cover"
       />
 
       <div className="foll">
@@ -98,18 +98,16 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
       <div className="btns">
         {user._id === profileUser._id ? (
           !coverpage.isedit ? (
-            <label htmlFor="cover" className="btn-edit ">
-              Edit Cover Page
+            <label htmlFor="cover" className="btn-edit">
+              Redesign
             </label>
           ) : (
-            <button onClick={oncancel}>cancel</button>
+            <button onClick={oncancel}>Cancel</button>
           )
         ) : null}
 
-        {user._id === profileUser._id ? (
-          coverpage.isedit ? (
-            <button onClick={onsave}>save</button>
-          ) : null
+        {user._id === profileUser._id && coverpage.isedit ? (
+          <button onClick={onsave}>Save</button>
         ) : null}
       </div>
     </Wrapper>

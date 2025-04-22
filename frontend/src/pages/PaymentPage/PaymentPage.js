@@ -29,7 +29,7 @@ const PaymentPage = () => {
         <form action="">
           <div className="info">
             <h5>Pay with Card</h5>
-            <h1>$ {price}</h1>
+            <h1>RS {price}</h1>
           </div>
           <Labelinput label={"Email"} placeholder={"Enter you Email"} />
           <label htmlFor="">Card Number</label>

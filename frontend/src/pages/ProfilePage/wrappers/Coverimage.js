@@ -2,84 +2,111 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 
   .coverimg {
-    height: 150px;
+    height: 200px;
+    width: 100%;
     object-fit: cover;
     border-radius: 15px;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   & > .foll {
     position: absolute;
-    left: 2%;
-    bottom: -20px;
+    bottom: 20px;
+    left: 5%;
     display: flex;
-    gap: 5px;
+    gap: 20px;
+    z-index: 1;
     text-transform: capitalize;
-    & > .followers {
-      background-color: white;
+    animation: fadeInUp 0.6s ease-out;
 
-      padding: 4%;
-      text-align: center;
-      color: var(--blue-900);
-      border-radius: 5px;
-      cursor: pointer;
-
-      & > h2 {
-        color: black;
-      }
-
-      &.active {
-        border: 3px solid var(--blue-900);
-      }
-    }
-
+    & > .followers,
     & > .following {
-      background-color: white;
-
-      padding: 4%;
+      background-color: rgba(255, 255, 255, 0.75);
+      padding: 10px 20px;
       text-align: center;
       color: var(--blue-900);
-      border-radius: 5px;
+      border-radius: 50px;
       cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+
       & > h2 {
         color: black;
+        font-size: 1.2rem;
       }
+
       &.active {
         border: 3px solid var(--blue-900);
+        background-color: rgba(0, 0, 255, 0.1);
+        transform: scale(1.1);
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 255, 0.05);
+        transform: scale(1.05);
       }
     }
   }
 
   & > .btns {
     position: absolute;
-    bottom: 9%;
-    right: 3%;
+    bottom: 10%;
+    right: 5%;
     display: flex;
-    gap: 5px;
-    & > button {
-      background-color: rgba(255, 255, 255, 0.61);
-      backdrop-filter: blur(25px);
-      border: none;
-      width: 100px;
-      height: 30px;
-      border-radius: 25px;
-    }
+    gap: 10px;
+    z-index: 5;
+    animation: fadeInUp 0.6s ease-out;
+
+    & > button,
     & > .btn-edit {
-      background-color: rgba(255, 255, 255, 0.61);
-      backdrop-filter: blur(25px);
-      padding-inline: 3%;
-      padding-block: 1%;
-      border-radius: 25px;
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
       border: none;
-      white-space: nowrap;
-      font-size: 0.7rem;
-      width: 100px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 120px;
+      height: 35px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--blue-900);
+
+      &:hover {
+        background-color: rgba(0, 0, 255, 0.1);
+        transform: scale(1.05);
+      }
+
+      &.btn-edit {
+        padding: 10px 20px;
+        text-align: center;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 `;
+
 export default Wrapper;

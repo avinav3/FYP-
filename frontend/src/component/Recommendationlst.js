@@ -45,7 +45,7 @@ const Recommendationlst = () => {
   }
 
   if (!lst || lst.length === 0) {
-    return <div>No recommendations available.</div>; // Show this if the list is empty or undefined
+    return <div>No recommendations available.</div>;
   }
 
   return (

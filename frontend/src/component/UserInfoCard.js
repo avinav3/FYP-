@@ -4,6 +4,7 @@ import { useAppContext } from "../context/appContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -43,7 +44,7 @@ const UserInfoCard = () => {
     <Wrapper className="user-card">
       <div className="info-card glassmorphism">
         <div className="userimage">
-          <img className="profile-pic-xL" src={photo} alt="" />
+          <img className="profile-pic-xL" src={photo} alt="User" />
         </div>
         <div className="username">{naam}</div>
         <div className="userskill" style={{ textTransform: "capitalize" }}>
@@ -85,6 +86,7 @@ const UserInfoCard = () => {
         )}
       </div>
 
+      {/* Calendar */}
       <div className="p-2 rounded-xl shadow-md bg-white/80 backdrop-blur-md mt-4 w-[70%] ml-0 text-xs">
         <div className="flex justify-between items-center mb-2">
           <button onClick={prevMonth}>
@@ -126,6 +128,27 @@ const UserInfoCard = () => {
           ))}
         </motion.div>
       </div>
+
+      {/* Customer Support Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className=" w-[70%] mt-4 grid grid-cols-1 gap-2 text-[12px]"
+      >
+        <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
+          <FaPhone className="text-green-500" />
+          <span className="text-gray-700 font-medium">9745358527</span>
+        </div>
+        <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
+          <FaEnvelope className="text-blue-500" />
+          <span className="text-gray-700 font-medium">nextskill@gmail.com</span>
+        </div>
+        <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
+          <FaMapMarkerAlt className="text-red-500" />
+          <span className="text-gray-700 font-medium">Kathmandu, Nepal</span>
+        </div>
+      </motion.div>
     </Wrapper>
   );
 };

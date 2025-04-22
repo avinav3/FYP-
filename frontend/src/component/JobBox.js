@@ -7,16 +7,17 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import { IoTime } from "react-icons/io5";
 import Countdown from "react-countdown";
+import { FaRupeeSign } from "react-icons/fa"; // Import the Rupee icon
+
 const JobBox = (job) => {
   const navigate = useNavigate();
   const { user, savejob, unsavejob } = useAppContext();
   const [bookmarked, Setbookmark] = useState(false);
+
   useEffect(() => {
     if (job.job.saved.find((like) => like === user._id)) {
       Setbookmark(true);
-      // postState.bookmarked= true
     } else {
-      // postState.bookmarked = falsea
       Setbookmark(false);
     }
   }, [job.job.saved, user._id]);
@@ -32,11 +33,11 @@ const JobBox = (job) => {
       Setbookmark(true);
     }
   };
+
   return (
     <Wrapper>
       <div className="jobbox glassmorphism">
         {/* header */}
-
         <div className="jobboxheader">
           <div className="companyinfo">
             <img
@@ -62,7 +63,6 @@ const JobBox = (job) => {
         </div>
 
         {/* body */}
-
         <div className="jobdetail">{job.job.description}</div>
 
         <div className="jobtype">
@@ -70,14 +70,15 @@ const JobBox = (job) => {
           <p className="jobfield bluebox">{job.job.sector}</p>
           <p className="jobfield bluebox">{job.job.experiencelvl}</p>
         </div>
-        {/* footer */}
 
+        {/* footer */}
         <div className="jobboxfooter">
           <div className="jobspecification">
             <div className="jobprice">
-              <RiMoneyDollarCircleFill className="blue-icon" />
+              <FaRupeeSign className="blue-icon" />{" "}
+              {/* Replaced with Rupee icon */}
               <p className="price">
-                ${job.job.sallary} <span className="light-text">/Month</span>
+                {job.job.sallary} <span className="light-text">/Month</span>
               </p>
             </div>
             <div className="jobLocation">

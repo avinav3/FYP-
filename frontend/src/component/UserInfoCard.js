@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -129,24 +130,64 @@ const UserInfoCard = () => {
         </motion.div>
       </div>
 
-      {/* Customer Support Section */}
+      {/* Customer Support Section - Separate Boxes */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className=" w-[70%] mt-4 grid grid-cols-1 gap-2 text-[12px]"
+        className="w-[70%] ml-0 mt-4 grid grid-cols-1 gap-2 text-[12px]"
       >
+        {/* Phone */}
         <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
           <FaPhone className="text-green-500" />
           <span className="text-gray-700 font-medium">9745358527</span>
         </div>
+
+        {/* Email */}
         <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
           <FaEnvelope className="text-blue-500" />
           <span className="text-gray-700 font-medium">nextskill@gmail.com</span>
         </div>
+
+        {/* Address */}
         <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow hover:scale-[1.02] transition-transform flex items-center gap-3">
           <FaMapMarkerAlt className="text-red-500" />
           <span className="text-gray-700 font-medium">Kathmandu, Nepal</span>
+        </div>
+      </motion.div>
+
+      {/* Social Links Box */}
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-[70%] ml-0 mt-2 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow grid grid-cols-1 text-[12px]"
+      >
+        <div className="flex justify-center gap-5">
+          <a
+            href="https://www.facebook.com/avinav.baral.2025"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:scale-110 transition-transform"
+          >
+            <FaFacebook className="text-blue-600 text-xl" />
+          </a>
+          <a
+            href="https://www.instagram.com/avinav_baral/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:scale-110 transition-transform"
+          >
+            <FaInstagram className="text-pink-500 text-xl" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/avinav-baral-6252a1266/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:scale-110 transition-transform"
+          >
+            <FaLinkedin className="text-blue-800 text-xl" />
+          </a>
         </div>
       </motion.div>
     </Wrapper>

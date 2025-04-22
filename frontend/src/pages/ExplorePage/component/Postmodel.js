@@ -15,6 +15,7 @@ import { AiFillEdit } from "react-icons/ai";
 import ModelComment from "./ModelComment";
 import Postcomment from "./Postcomment";
 import Postoptions from "./Postoptions";
+import { useNavigate } from "react-router-dom";
 
 const Postmodel = React.memo(({ slideIndex, explorelst, closeslide }) => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const Postmodel = React.memo(({ slideIndex, explorelst, closeslide }) => {
   const { isLoading, delPost, user } = useAppContext();
   const vidRef = useRef(null);
   const loadComment = useRef(true);
+  const navigate = useNavigate();
 
   const toggleCommentload = () => {
     loadComment.current = false;
@@ -158,9 +160,10 @@ const Postmodel = React.memo(({ slideIndex, explorelst, closeslide }) => {
                           <AiFillEdit
                             className="icon"
                             onClick={() =>
-                              navigate(`/Next Skill/postedit/${_id}`)
+                              navigate(`/Next Skill/postedit/${item._id}`)
                             }
                           />
+
                           <MdDelete
                             className="icon"
                             onClick={() => deletePost(item._id)}

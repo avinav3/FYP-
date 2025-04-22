@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Wrapper from "../wrapper/searchBar";
 import { useAppContext } from "../../../context/appContext";
-import { FaSearch } from "react-icons/fa";
+
 import { useRef } from "react";
 import { Link, useAsyncError } from "react-router-dom";
 
@@ -31,23 +31,17 @@ const SearchBar = () => {
   return (
     <Wrapper>
       <div className="search-container glassmorphism">
-        <span>
-          <FaSearch />
-        </span>
+        <span></span>
         <input
           type="search"
-          placeholder="Search User"
+          placeholder="Search Respective Users"
           className="searchbar"
           onChange={onChange}
         />
         <button className="btn-post">search</button>
       </div>
 
-      <div
-        className={
-           search.length > 0  ? "search_result" : "d-none"
-        }
-      >
+      <div className={search.length > 0 ? "search_result" : "d-none"}>
         {searchList.map((item, index) => {
           return (
             <Link

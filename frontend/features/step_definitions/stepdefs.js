@@ -27,7 +27,7 @@ When("I enter my username", async () => {
 
 When("I enter my email", async () => {
   let element = driver.wait(until.elementLocated(By.name("email")));
-  element.sendKeys("chiragsimkhadatest@gmail.com");
+  element.sendKeys("Avinavbaraldatest@gmail.com");
 });
 
 When("I enter description", async () => {

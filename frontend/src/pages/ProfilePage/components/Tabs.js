@@ -36,10 +36,10 @@ const Tabs = ({ activeindex, setTab }) => {
       text: "posts",
     },
 
-    {
-      id: 1,
-      text: "About",
-    },
+    // {
+    //   id: 1,
+    //   text: "About",
+    // },
     {
       id: 2,
       text: "Saved Posts",

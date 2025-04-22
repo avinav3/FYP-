@@ -272,7 +272,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
             <FormControl>
               <Input
-                placeholder="Add Users eg: Chirag, John..."
+                placeholder="Add Users eg: Avinav, Saug..."
                 mb={1}
                 onChange={(e) => handleSearch(e.target.value)}
               />

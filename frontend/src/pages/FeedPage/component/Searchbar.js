@@ -18,10 +18,10 @@ const uploadState = {
   filetype: "",
 };
 
-const Searchbar = React.memo(({  toggleload }) => {
+const Searchbar = React.memo(({ toggleload }) => {
   const [upload, setUpload] = useState(uploadState);
   const [preview, setPreview] = useState("");
- 
+
   const { createPost, isSubmit } = useAppContext();
 
   const toggleLocation = (e) => {
@@ -33,18 +33,16 @@ const Searchbar = React.memo(({  toggleload }) => {
     setUpload({ ...upload, [e.target.name]: e.target.value });
   };
 
-  const onSubmit =(e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const { postfile, userLocation, description, filetype } = upload;
 
     const userpost = { postfile, userLocation, description, filetype };
 
-   createPost({ userpost });
+    createPost({ userpost });
 
-   setUpload(uploadState);
-   toggleload();
-  
-        
+    setUpload(uploadState);
+    toggleload();
   };
 
   const onFileSelection = (e) => {
@@ -122,13 +120,13 @@ const Searchbar = React.memo(({  toggleload }) => {
         <div className="feedsearch glassmorphism">
           <img
             className="profile-pic-sm"
-            src="https://i.pinimg.com/736x/0d/0b/21/0d0b211c1ecc0562b9f4c2a4305c9436.jpg"
+            src="https://img.freepik.com/free-vector/detective-following-footprints-concept-illustration_114360-21835.jpg?semt=ais_hybrid&w=740"
             alt=""
           />
 
           <input
             type="textarea"
-            placeholder="Whats on your mind?"
+            placeholder="Put your caption here ?"
             className="searchbar"
             name="description"
             value={upload.description}
@@ -145,7 +143,7 @@ const Searchbar = React.memo(({  toggleload }) => {
             <RiImageAddFill className="icon" />
           </div>
           <HiLocationMarker className="icon" onClick={toggleLocation} />
-          <button className="btn-send"  onClick={onSubmit}>
+          <button className="btn-send" onClick={onSubmit}>
             Post
           </button>
         </div>

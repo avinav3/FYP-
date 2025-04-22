@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRef } from "react";
 import Wrapper from "../wrappers/SelectionOption";
-const SelectionOption = ({ categoryfilter,clearcategory }) => {
+const SelectionOption = ({ categoryfilter, clearcategory }) => {
   const options = [
     {
       label: "Fashon",
@@ -138,78 +138,7 @@ const SelectionOption = ({ categoryfilter,clearcategory }) => {
       : value.some((item) => item.label === option.label);
   }
 
-  return (
-    <Wrapper className="glassmorphism">
-      <div
-        tabIndex={0}
-        ref={containerRef}
-        onClick={(e) => {
-          setIsOpen((prev) => !prev);
-        }}
-        onBlur={() => setIsOpen(false)}
-        className="select-container"
-      >
-        <span className="select value">
-          {multiple
-            ? value.map((v) => {
-                return (
-                  <button
-                    className="option-badge glassmorphism"
-                    key={v.value}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      selectOption(v);
-                      categoryfilter(v.label);
-                    }}
-                  >
-                    {v.label} <span className="btn-remove">&times;</span>
-                  </button>
-                );
-              })
-            : "Enter Category"}
-        </span>
-        <button
-          onClick={(e) => {
-            clearOptions();
-            e.stopPropagation();
-            clearcategory()
-          }}
-          className="clear-btn"
-        >
-          &times;
-        </button>
-        <div className="divider"></div>
-        <div className="caret"></div>
-        <ul className={isOpen ? "options show" : "options"}>
-          {options.map((option, index) => {
-            return (
-              <li
-                key={option.value}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  selectOption(option);
-                  setIsOpen(false);
-                  categoryfilter(option.label);
-                }}
-                onMouseEnter={() => highlightlst(index)}
-                className={
-                  isOptionSelected(option)
-                    ? `option selected ${
-                        index === highlightedIndex ? "highlighted" : ""
-                      }`
-                    : `option ${
-                        index === highlightedIndex ? "highlighted" : ""
-                      }`
-                }
-              >
-                {option?.label}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </Wrapper>
-  );
+  return <Wrapper className="glassmorphism"></Wrapper>;
 };
 
 export default SelectionOption;

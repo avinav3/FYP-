@@ -20,7 +20,7 @@ const SearchContainer = ({ applyFilters, handleChange }) => {
   return (
     <Wrapper>
       <div className="search-container glassmorphism">
-        <div className="heading6">Search</div>
+        <div className="heading6">Search Jobs </div>
         <div className="searchbox ">
           <div className="searchbar">
             <BiSearch className="search-icon" color="white" />{" "}

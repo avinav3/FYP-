@@ -419,27 +419,6 @@ const JobDetail = () => {
               ) : null}
             </div>
           </div>
-          {owner ? (
-            payment ? (
-              <button
-                className={`btn-easy ${showPayment ? "hideNow" : ""}`}
-                onClick={handleShowPayment}
-              >
-                Complete Payment
-              </button>
-            ) : (
-              <>Payment Status: {paymentStatus}</>
-            )
-          ) : (
-            <div></div>
-          )}
-          {showPayment && (
-            <StripeContainer
-              paymentTo={hired.applicant._id}
-              amount={hired.bid}
-              jobId={job._id}
-            />
-          )}
         </div>
         <div className="right-section ">
           <Recommendationlst />

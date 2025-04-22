@@ -16,7 +16,7 @@ const Wrapper = styled.aside`
       margin-top: 10px;
 
       & > .searchbar {
-        background-color: var(--blue-300);
+        background-color: var(--blue-500);
         border-radius: 50px;
         display: flex;
         align-items: center;
@@ -49,7 +49,7 @@ const Wrapper = styled.aside`
           border-radius: 5px;
           margin-top: 10px;
           padding: 2%;
-          height:100%;
+          height: 100%;
           border: none;
           height: 2.2rem;
         }

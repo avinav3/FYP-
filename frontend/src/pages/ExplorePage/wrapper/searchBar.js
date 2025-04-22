@@ -23,8 +23,8 @@ const Wrapper = styled.div`
 
     & > .btn-post {
       width: 100px;
-      color: var(--blue-900);
-      background-color: transparent;
+      color: var(--blue-1200);
+      background-color: var(--blue-200);
       border: none;
       font-size: 1.1em;
       font-weight: bold;

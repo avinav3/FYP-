@@ -129,7 +129,7 @@ it("Post / Login ===> 200 on success ", () => {
   return request(app)
     .post("/api/v1/auth/login")
     .send({
-      email: "chiragsimkhada@gmail.com",
+      email: "Avinavbaral@gmail.com",
       password: "Abcd@1234",
     })
     .expect("Content-Type", /json/)

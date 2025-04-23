@@ -30,6 +30,7 @@ import EditProfilePage from "./pages/EditProfile/EditProfilePage";
 import ChatProvider from "./context/ChatProvider";
 import ChatPage from "./pages/ChatPage";
 import StripeContainer from "./component/StripeContainer";
+import ReportPage from "./pages/ReportPage"; // Import ReportPage
 
 function App() {
   return (
@@ -92,13 +93,10 @@ function App() {
             <Route path="add/job" element={<AddJobPage />} />
             <Route path="edit/job/:id" element={<EditJobPage />} />
             <Route path="edit" element={<EditProfilePage />} />
-            {/* <Route path="payment" element={<PaymentPage />} /> */}
-
             <Route path="message" element={<MessagePage />} />
             <Route path="applicants/:id" element={<ApplicantPage />} />
             <Route path="payments" element={<UserPaymentPage />} />
             <Route path="card" element={<ViewCardPage />} />
-
             <Route path="profile/:id" element={<ProfilePage />} />
           </Route>
 
@@ -136,6 +134,16 @@ function App() {
           >
             <Route path="postedit/:id" element={<PostEditPage />} />
           </Route>
+
+          {/* Add the route for the ReportPage */}
+          <Route
+            path="/user/report"
+            element={
+              <ProtectedRoute>
+                <ReportPage /> {/* Render the ReportPage here */}
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<h2>error</h2>}></Route>
         </Routes>

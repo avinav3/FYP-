@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import Wrapper from "../wrappers/Navbar";
@@ -8,73 +8,108 @@ import Notifylst from "./Notifylst";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { FaKey } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
-
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Navbar = () => {
-  const option = {
+  const initialState = {
     dropdown: false,
     notify: false,
   };
-  const [drop, setdrop] = useState(option);
+
+  const [drop, setDrop] = useState(initialState);
+  const [animateProfile, setAnimateProfile] = useState(false);
   const { user, logoutUser, photo } = useAppContext();
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        !event.target.closest(".nav-content") &&
+        !event.target.closest(".notifylst")
+      ) {
+        setDrop(initialState);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const gotoprofile = (e) => {
     e.stopPropagation();
     navigate(`/chats`);
+    setDrop(initialState);
   };
 
   const profileoption = () => {
-    setdrop({ notify: false, dropdown: !drop.dropdown });
+    setDrop({ notify: false, dropdown: !drop.dropdown });
+    setAnimateProfile(true);
+    setTimeout(() => setAnimateProfile(false), 500);
   };
 
   const notifyoption = (e) => {
     e.stopPropagation();
-    setdrop({ notify: !drop.notify, dropdown: false });
+    setDrop({ notify: !drop.notify, dropdown: false });
   };
+
+  const handleMenuOption = (action) => {
+    if (action === "password") {
+      navigate("/user/changepassword");
+    } else if (action === "logout") {
+      logoutUser();
+    }
+    setDrop(initialState);
+  };
+
   return (
     <Wrapper>
-      <nav className="navbar sticky">
+      <nav className="navbar">
         <Logo />
 
         <NavLinks />
 
-        <div className="nav-content glassmorphism " onClick={profileoption}>
-          {/* <div className="notify">
-            <IoIosNotifications className="bell-icon" onClick={notifyoption} />
-            <span>20</span>
-          </div> */}
-          <img className="profile-pic-sm" src={photo} alt="" />
-          <div className="dropdown-menus ">
+        <div
+          className={`nav-content glassmorphism ${
+            animateProfile ? "animate-pulse" : ""
+          }`}
+          onClick={profileoption}
+        >
+          <img
+            className="profile-pic-sm"
+            src={photo}
+            alt={`${user.username}'s profile`}
+          />
+
+          <div className="dropdown-menus">
             <h5>{user.username}</h5>
 
-            <ul
-              className={
-                drop.dropdown ? "dropdown-options glassmorphism" : "d-none"
-              }
-            >
-              <li onClick={(e) => gotoprofile(e)}>
-                <span>
-                  <BsFillChatDotsFill />
-                </span>
-                <span>Chat</span>
-              </li>
-              <li onClick={() => navigate("/user/changepassword")}>
-                <span>
-                  <FaKey />
-                </span>
-                <span>changepassword</span>
-              </li>
+            {drop.dropdown && (
+              <ul className="dropdown-options glassmorphism">
+                <li onClick={(e) => gotoprofile(e)}>
+                  <span>
+                    <BsFillChatDotsFill />
+                  </span>
+                  <span>My Chats</span>
+                </li>
 
-              <li onClick={() => logoutUser()}>
-                <span>
-                  <IoLogOut />
-                </span>
-                <span>logout</span>
-              </li>
-            </ul>
+                <li onClick={() => handleMenuOption("password")}>
+                  <span>
+                    <FaKey />
+                  </span>
+                  <span>Change Password</span>
+                </li>
+
+                <li onClick={() => handleMenuOption("logout")}>
+                  <span>
+                    <IoLogOut />
+                  </span>
+                  <span>Logout</span>
+                </li>
+              </ul>
+            )}
           </div>
 
           <IoMdArrowDropdown
@@ -82,7 +117,8 @@ const Navbar = () => {
           />
         </div>
       </nav>
-      {drop.notify ? <Notifylst /> : null}
+
+      {drop.notify && <Notifylst />}
     </Wrapper>
   );
 };

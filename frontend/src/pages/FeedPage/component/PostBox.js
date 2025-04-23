@@ -3,6 +3,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiFillHeart, AiFillEdit } from "react-icons/ai";
 import { FaComment, FaShare } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 
 import disk from "../../../assets/images/disk.png";
 import Wrapper from "../wrapper/PostBox";
@@ -19,6 +20,7 @@ const PostBox = React.memo(({ item }) => {
 
   const loadComment = useRef(false);
   const navigate = useNavigate();
+  const postRef = useRef(null);
 
   const stopCommentload = () => {
     loadComment.current = false;
@@ -30,16 +32,8 @@ const PostBox = React.memo(({ item }) => {
     console.log("startComentload");
   };
 
-  const {
-    userid,
-    location,
-    _id,
-
-    filetype,
-    postfile,
-    description,
-    createdAt,
-  } = item;
+  const { userid, location, _id, filetype, postfile, description, createdAt } =
+    item;
 
   const doc = {
     uri: postfile,
@@ -55,9 +49,11 @@ const PostBox = React.memo(({ item }) => {
     isPost: false,
     likecount: 0,
     commentcount: 0,
+    showLikeAnimation: false,
   };
 
   const [postState, SetPost] = useState(initialState);
+
   useEffect(() => {
     if (item.likesid.find((like) => like === user._id)) {
       SetPost({
@@ -66,9 +62,7 @@ const PostBox = React.memo(({ item }) => {
         likecount: item.likesid.length,
         commentcount: item.commentsid.length,
       });
-      // postState.liked= true
     } else {
-      // postState.liked = false
       SetPost({
         ...postState,
         liked: false,
@@ -80,11 +74,11 @@ const PostBox = React.memo(({ item }) => {
 
   const vidRef = useRef(null);
   const onentry = () => {
-    vidRef.current.play();
+    vidRef.current && vidRef.current.play();
   };
 
   const onleave = () => {
-    vidRef.current.pause();
+    vidRef.current && vidRef.current.pause();
   };
 
   const toggleLike = (e) => {
@@ -99,12 +93,41 @@ const PostBox = React.memo(({ item }) => {
       });
     } else {
       likepost({ postid });
-
       SetPost({
         ...postState,
         liked: true,
         likecount: postState.likecount + 1,
+        showLikeAnimation: true,
       });
+
+      // Reset animation after it plays
+      setTimeout(() => {
+        SetPost((prevState) => ({
+          ...prevState,
+          showLikeAnimation: false,
+        }));
+      }, 1000);
+    }
+  };
+
+  const handleDoubleClick = () => {
+    if (!postState.liked) {
+      const postid = item._id;
+      likepost({ postid });
+      SetPost({
+        ...postState,
+        liked: true,
+        likecount: postState.likecount + 1,
+        showLikeAnimation: true,
+      });
+
+      // Reset animation after it plays
+      setTimeout(() => {
+        SetPost((prevState) => ({
+          ...prevState,
+          showLikeAnimation: false,
+        }));
+      }, 1000);
     }
   };
 
@@ -121,11 +144,7 @@ const PostBox = React.memo(({ item }) => {
   };
 
   const toggleOption = () => {
-    if (postState.isoption) {
-      SetPost({ ...postState, isoption: false });
-    } else {
-      SetPost({ ...postState, isoption: true });
-    }
+    SetPost({ ...postState, isoption: !postState.isoption });
   };
 
   const deletePost = (postid) => {
@@ -137,39 +156,43 @@ const PostBox = React.memo(({ item }) => {
     }
   };
 
-  const toggleComment = (e) => {
-    if (postState.isComment) {
-      SetPost({ ...postState, isComment: false });
-      loadComment.current = false;
-    } else {
-      SetPost({ ...postState, isComment: true });
-      loadComment.current = true;
-    }
+  const toggleComment = () => {
+    SetPost({
+      ...postState,
+      isComment: !postState.isComment,
+      isPost: postState.isComment ? false : postState.isPost,
+    });
+    loadComment.current = !postState.isComment;
   };
 
-  const toggleReadMore = (e) => {
-    if (postState.isReadMore) {
-      SetPost({ ...postState, isReadMore: false });
-    } else {
-      SetPost({ ...postState, isReadMore: true });
-    }
+  const toggleReadMore = () => {
+    SetPost({ ...postState, isReadMore: !postState.isReadMore });
   };
 
   const togglepostBar = () => {
-    SetPost({ ...postState, isPost: !postState.isPost });
+    SetPost({
+      ...postState,
+      isPost: !postState.isPost,
+      isComment: postState.isPost ? false : postState.isComment,
+    });
   };
 
-  const desc =
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque, culpa, tenetur repudiandae dolor cupiditate perferendis, mollitia placeat sit ad dolore quasi dolores corporis iste autem eius numquam quia nostrum delectus!";
   return (
     <Wrapper>
-      <div
+      <motion.div
+        ref={postRef}
         className={!postState.isDelete ? "video-post glassmorphism" : "d-none"}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         <div className="post-content">
-          {/* absolute */}
-          <div className="post-header ">
-            <div className="userInfo">
+          <div className="post-header">
+            <motion.div
+              className="userInfo"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <img
                 src={userid?.profilePicture}
                 alt=""
@@ -179,46 +202,62 @@ const PostBox = React.memo(({ item }) => {
                 <span className="username">{userid?.username}</span>
                 <p className="location">{location}</p>
               </div>
-            </div>
+            </motion.div>
             <div className="post-edit">
-              <BsThreeDots
-                className={userid?._id === user._id ? "icon" : "d-none"}
-                onClick={toggleOption}
-              />
-
-              <div
-                className={
-                  postState.isoption ? "edit-option glassmorphism" : "d-none"
-                }
+              <motion.div
+                whileHover={{ rotate: 90 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="list">
-                  <AiFillEdit
-                    className="icon"
-                    onClick={() => navigate(`/Next Skill/postedit/${_id}`)}
-                  />
-                  <span>Edit</span>
-                </div>
-                <div className="list">
-                  <MdDelete
-                    className="icon"
-                    onClick={() => deletePost(item._id)}
-                  />
-                  <span>Delete</span>
-                </div>
-              </div>
+                <BsThreeDots
+                  className={userid?._id === user._id ? "icon" : "d-none"}
+                  onClick={toggleOption}
+                />
+              </motion.div>
+
+              <AnimatePresence>
+                {postState.isoption && (
+                  <motion.div
+                    className="edit-option glassmorphism"
+                    initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <motion.div
+                      className="list"
+                      whileHover={{ backgroundColor: "rgba(0,0,0,0.05)", x: 5 }}
+                      onClick={() => navigate(`/Next Skill/postedit/${_id}`)}
+                    >
+                      <AiFillEdit className="icon" />
+                      <span>Edit</span>
+                    </motion.div>
+                    <motion.div
+                      className="list"
+                      whileHover={{
+                        backgroundColor: "rgba(255,0,0,0.1)",
+                        x: 5,
+                      }}
+                      onClick={() => deletePost(item._id)}
+                    >
+                      <MdDelete className="icon" />
+                      <span>Delete</span>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
-          <div className="post-image-section">
+
+          <div className="post-image-section" onDoubleClick={handleDoubleClick}>
             {filetype?.substring(0, filetype.indexOf("/")) === "image" ? (
-              <img
-                onDoubleClick={toggleLike}
+              <motion.img
                 className="post-img"
                 src={postfile}
                 alt=""
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
               />
-            ) : (
-              ""
-            )}
+            ) : null}
 
             {filetype?.substring(0, filetype.indexOf("/")) === "video" ? (
               <video
@@ -232,17 +271,21 @@ const PostBox = React.memo(({ item }) => {
               >
                 <source type="video/mp4" src={postfile} />
               </video>
-            ) : (
-              ""
-            )}
+            ) : null}
 
             {filetype?.substring(0, filetype.indexOf("/")) === "audio" ? (
               <div
-                className="post-img"
+                className="post-img audio-container"
                 onMouseEnter={onentry}
                 onMouseLeave={onleave}
               >
-                <img src={disk} alt="" className="music-img" />
+                <motion.img
+                  src={disk}
+                  alt=""
+                  className="music-img"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                />
                 <audio
                   className="music-player"
                   loop
@@ -252,28 +295,38 @@ const PostBox = React.memo(({ item }) => {
                   <source className="music" type={filetype} src={postfile} />
                 </audio>
               </div>
-            ) : (
-              ""
-            )}
+            ) : null}
 
-            {filetype?.substring(
-              0,
-              filetype.indexOf("/") === "application" ? (
-                <div className="post-img">
-                  <DocViewer
-                    className="post-img"
-                    pluginRenderers={DocViewerRenderers}
-                    documents={doc}
-                  />
-                </div>
-              ) : (
-                ""
-              )
-            )}
+            {filetype?.substring(0, filetype.indexOf("/")) === "application" ? (
+              <div className="post-img">
+                <DocViewer
+                  className="post-img"
+                  pluginRenderers={DocViewerRenderers}
+                  documents={[doc]}
+                />
+              </div>
+            ) : null}
+
+            {/* Heart animation on double click */}
+            <AnimatePresence>
+              {postState.showLikeAnimation && (
+                <motion.div
+                  className="heart-animation"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 1.5, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <AiFillHeart />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          {/* absolute */}
-          <span className="post-description ">
-            {postState.isReadMore ? description : desc?.substring(0, 100)}
+
+          <span className="post-description">
+            {postState.isReadMore
+              ? description
+              : description?.substring(0, 100)}
           </span>
           <span className="more-less">
             {postState.isReadMore ? "...less" : "...more"}
@@ -282,52 +335,113 @@ const PostBox = React.memo(({ item }) => {
 
         <div className="post-option">
           <div className="post-interaction">
-            <AiFillHeart
-              className={`${postState.liked ? "icon red" : "icon"} like-btn`}
-              onClick={toggleLike}
-            />
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <AiFillHeart
+                className={`${postState.liked ? "icon red" : "icon"} like-btn`}
+                onClick={toggleLike}
+              />
+            </motion.div>
 
-            <FaComment className="icon comment-btn" onClick={togglepostBar} />
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <FaComment className="icon comment-btn" onClick={togglepostBar} />
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <FaShare className="icon share-btn" />
+            </motion.div>
           </div>
 
-          <Bookmark saved={item.saved} postid={item._id} />
-
-          {/* {postState.bookmarked ? (
-            <BsFillBookmarkFill className="icon black" onClick={togglesave} />
-          ) : (
-            <BsBookmark className="icon" onClick={togglesave} />
-          )} */}
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <Bookmark saved={item.saved} postid={item._id} />
+          </motion.div>
         </div>
-        <div className="like-count">{postState.likecount} likes</div>
+
+        <motion.div
+          className="like-count"
+          animate={{
+            scale: [1, 1.2, 1],
+            color: postState.liked ? ["#000", "#ff0000", "#000"] : "#000",
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          {postState.likecount} likes
+        </motion.div>
 
         <div className="post-description">
           <span className="username">{userid?.username}</span>
-          <span className="post-desc ">
+          <span className="post-desc">
             {description?.substring(0, postState.isReadMore ? 600 : 100)}
           </span>
-          <span className="more-less" onClick={toggleReadMore}>
+          <motion.span
+            className="more-less"
+            onClick={toggleReadMore}
+            whileHover={{ color: "#007bff" }}
+          >
             {description?.split(" ").length > 9
               ? postState.isReadMore
                 ? "...less"
                 : "...more"
               : null}
-          </span>
-        </div>
-        <span className="view-comments" onClick={toggleComment}>
-          {postState.isComment ? "close all comments" : "view all comments"}
-        </span>
-        <div className={postState.isComment ? "" : "d-none"}>
-          <Commentlst
-            loadComment={loadComment.current}
-            postID={item._id}
-            toggleCommentload={stopCommentload}
-          />
+          </motion.span>
         </div>
 
-        <div className={postState.isPost ? "" : "d-none"}>
-          <PostComment startCommentload={startCommentload} postId={item._id} />
-        </div>
-      </div>
+        <motion.span
+          className="view-comments"
+          onClick={toggleComment}
+          whileHover={{ color: "#007bff" }}
+        >
+          {postState.isComment ? "close all comments" : "view all comments"}
+        </motion.span>
+
+        <AnimatePresence>
+          {postState.isComment && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Commentlst
+                loadComment={loadComment.current}
+                postID={item._id}
+                toggleCommentload={stopCommentload}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {postState.isPost && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PostComment
+                startCommentload={startCommentload}
+                postId={item._id}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </Wrapper>
   );
 });

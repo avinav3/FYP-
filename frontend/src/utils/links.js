@@ -1,33 +1,32 @@
-import { MdWork } from "react-icons/md";
-import { FaPhotoVideo } from "react-icons/fa";
-import { MdExplore } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
-
+import { FaBriefcase } from "react-icons/fa6";
+import { IoPersonCircleSharp } from "react-icons/io5";
+import { BiWorld } from "react-icons/bi";
+import { BsCollectionPlayFill } from "react-icons/bs";
 
 const links = [
   {
     id: 1,
     text: "Jobs",
     path: "/user/work",
-    icon: <MdWork />,
+    icon: <FaBriefcase />,
   },
   {
     id: 2,
     text: "Profile",
     path: "/user/message",
-    icon: <FaUser />,
+    icon: <IoPersonCircleSharp />,
   },
   {
     id: 3,
     text: "Explore",
     path: "/user/explore",
-    icon: <MdExplore />,
+    icon: <BiWorld />,
   },
   {
     id: 4,
     text: "Overview",
     path: "/user/feeds",
-    icon: <FaPhotoVideo />,
+    icon: <BsCollectionPlayFill />,
   },
 ];
 

@@ -8,45 +8,46 @@ const Tabs = ({ activeindex, setTab }) => {
   const userlst = [
     {
       id: 0,
-      text: "posts",
+      text: "Posts",
+      icon: "📋",
     },
-
     {
       id: 1,
       text: "About",
+      icon: "👤",
     },
     {
       id: 2,
       text: "Saved Posts",
+      icon: "🔖",
     },
     {
       id: 3,
-      text: "saved jobs",
+      text: "Saved Jobs",
+      icon: "💼",
     },
-
     {
       id: 4,
-      text: "job history",
+      text: "Job History",
+      icon: "📝",
     },
   ];
 
   const userlst2 = [
     {
       id: 0,
-      text: "posts",
+      text: "Posts",
+      icon: "📋",
     },
-
-    // {
-    //   id: 1,
-    //   text: "About",
-    // },
     {
       id: 2,
       text: "Saved Posts",
+      icon: "🔖",
     },
     {
       id: 3,
-      text: "saved jobs",
+      text: "Saved Jobs",
+      icon: "💼",
     },
   ];
 
@@ -54,21 +55,21 @@ const Tabs = ({ activeindex, setTab }) => {
 
   return (
     <Wrapper>
-      {tablst.map((item, index) => {
-        return activeindex === item.id ? (
-          <h5 key={item.id} className="btn-tab active">
-            {item.text}
-          </h5>
-        ) : (
-          <h5
+      <div className="tabs-container">
+        {tablst.map((item) => (
+          <button
             key={item.id}
             onClick={() => setTab(item.id)}
-            className="btn-tab "
+            className={`tab-button ${activeindex === item.id ? "active" : ""}`}
+            aria-selected={activeindex === item.id}
+            role="tab"
           >
-            {item.text}
-          </h5>
-        );
-      })}
+            <span className="tab-icon">{item.icon}</span>
+            <span className="tab-text">{item.text}</span>
+            {activeindex === item.id && <span className="active-indicator" />}
+          </button>
+        ))}
+      </div>
     </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Wrapper from "../wrappers/Coverimage";
 import { useAppContext } from "../../../context/appContext";
 import axios from "axios";
@@ -32,35 +32,40 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
   };
 
   const onsave = async () => {
-    const formData = new FormData();
-    formData.append("coverpage", coverpage.file);
-    await axios
-      .patch(`/api/v1/profile/editcoverpage`, formData, {
+    try {
+      const formData = new FormData();
+      formData.append("coverpage", coverpage.file);
+      await axios.patch(`/api/v1/profile/editcoverpage`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .then(
-        setCover({
-          ...coverpage,
-          isedit: false,
-          coverimg: coverpage.preview,
-          preview: null,
-        })
-      );
+      });
+
+      setCover({
+        ...coverpage,
+        isedit: false,
+        coverimg: coverpage.preview,
+        preview: null,
+      });
+    } catch (error) {
+      console.error("Error saving cover image:", error);
+    }
   };
 
   if (isLoading) {
-    return <div> </div>;
+    return <div className="cover-loader"></div>;
   }
 
   return (
     <Wrapper>
-      <img
-        className="coverimg"
-        src={coverpage.preview ?? coverpage.coverimg ?? profileUser.coverpage}
-        alt="Cover"
-      />
+      <div className="cover-container">
+        <img
+          className="coverimg"
+          src={coverpage.preview ?? coverpage.coverimg ?? profileUser.coverpage}
+          alt="Cover"
+        />
+        <div className="overlay-gradient"></div>
+      </div>
 
       <div className="foll">
         <div
@@ -87,6 +92,7 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
           <p>following</p>
         </div>
       </div>
+
       <input
         type="file"
         accept="image/*"
@@ -95,6 +101,7 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
         className="d-none"
         onChange={fileselection}
       />
+
       <div className="btns">
         {user._id === profileUser._id ? (
           !coverpage.isedit ? (
@@ -102,12 +109,16 @@ const Coverimage = ({ coverimage, changeactive, activeindex, subtract }) => {
               Redesign
             </label>
           ) : (
-            <button onClick={oncancel}>Cancel</button>
+            <button onClick={oncancel} className="btn-cancel">
+              Cancel
+            </button>
           )
         ) : null}
 
         {user._id === profileUser._id && coverpage.isedit ? (
-          <button onClick={onsave}>Save</button>
+          <button onClick={onsave} className="btn-save">
+            Save
+          </button>
         ) : null}
       </div>
     </Wrapper>

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import { IoTime } from "react-icons/io5";
 import Countdown from "react-countdown";
-import { FaRupeeSign } from "react-icons/fa"; // Import the Rupee icon
+import { FaRupeeSign } from "react-icons/fa";
 
 const JobBox = (job) => {
   const navigate = useNavigate();
